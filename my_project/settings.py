@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-(vv^p9y8(_o1h$+aosn=9i_-s=m3(7hzs%&p$b5liad5lj$f1z
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['34.69.139.156', 'localhost', '127.0.0.1','legendary-manatee-17d95f.netlify.app/','https://legendary-manatee-17d95f.netlify.app/']
+ALLOWED_HOSTS = ['34.69.139.156', 'localhost', '127.0.0.1','legendary-manatee-17d95f.netlify.app/','https://legendary-manatee-17d95f.netlify.app/','https://django-shop-1-vo4h.onrender.com/','django-shop-1-vo4h.onrender.com','django-shop-1-vo4h.onrender']
 
 
 # Application definition
