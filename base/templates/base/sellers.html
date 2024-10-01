@@ -1,0 +1,13 @@
+{% extends 'main.html' %}
+{% block content %}
+    {% include 'navbar.html' %}
+        <div onclick="closeNav()">
+            {% for singleuser in users %}
+                {% if singleuser.role.name == 'Seller' %}
+                    <div style="display: flex;align-items: center">
+                        <h1 ><a style="display: flex;align-items: center"  href="{% url 'sellerPage' singleuser.username %}"><img style="border-radius: 50%;width: 100px;height: 100px" src="{{ singleuser.avatar.url }}" alt="user"/>{{ singleuser.username }}</a></h1>
+                    </div>
+                {% endif %}
+        {% endfor %}
+        </div>
+{% endblock %}

@@ -1,0 +1,10 @@
+<div style="height: 100%;position: absolute;display: flex;top:70px;left: 0;width: 200px;;border: 1px solid red;align-items: start">
+    <div style="display:flex;align-items: center;justify-content: center;flex-direction: column;">
+        <a style="margin-top: 20px;padding: 10px;background: rgba(0,0,0,0.07);" href="{% url 'home' %}">All</a>
+        {% for topics in topic %}
+                <div style="margin: 20px">
+                    <a style="padding: 10px;background: rgba(0,0,0,0.07);" href="{% url 'home' %}?q={{ topics.name }}">{{ topics.name }}<span>d</span></a>
+                </div>
+        {% endfor %}
+    </div>
+</div>

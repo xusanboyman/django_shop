@@ -1,0 +1,44 @@
+{% extends 'main.html' %}
+{% block content %}
+    {% include 'navbar.html' %}
+    {% include 'base/topics.html' %}
+ <section onclick="closeNav()" class="products" style="width: 1200px;margin-left: 200px" id="products">
+        {% for product in rooms %}
+        <div style="display: flex;flex-direction: column;height: 260px" class="product-item">
+            <a href="{% url 'product' product.id %}">
+                {% if product.image %}
+                    <img style="overflow: hidden;scroll-margin-block-start:;position:relative;z-index: 30;width: 200px; height: 151px" class="product_img" src="{{ product.image.url }}">
+                    <img  style="overflow:hidden;z-index: 10;position:relative;top: -155px;;width: 200px; height: 151px" class="product_img" src="/images/images/img.png">
+                {% else %}
+                    <img style="width: 200px; height: 151px" class="product_img" alt="Product" src="static/media/images/img_1.png">
+                {% endif %}
+            </a>
+            <p style="height: 40px;">{{ product.name }}</p>
+            <p style="height: 40px">{{ product.description }}</p>
+            <div style="display: flex;justify-content: space-around;height: 80px">
+                <a href="{% url 'product' product.id %}"><button>Buy now</button></a>
+                {% if product.creator.id == request.user.id or user.role.name == 'Admin' %}
+                    <form method="POST" action="{% url 'delete_product' product.id %}">
+                        {% csrf_token %}
+                        <button>Delete</button>
+                    </form>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+    </section>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Check if the page has been refreshed before
+            if (sessionStorage.getItem('refreshed') === null) {
+                // If not, set the flag and reload the page
+                sessionStorage.setItem('refreshed', 'true');
+                window.location.reload();
+            } else {
+                // Clear the flag if it has been set
+                sessionStorage.removeItem('refreshed');
+            }
+        });
+
+    </script>
+{% endblock %}

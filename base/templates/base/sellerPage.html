@@ -1,0 +1,14 @@
+{% extends 'main.html' %}
+{% block content %}
+    {% include 'navbar.html' %}
+        {% if user.avatar %}
+            <h2>Seller Name: {{ user.username }}</h2>    <img style="border-radius: 50% ; width: 100px;height: 100px" alt="User image" src="{{ user.avatar.url }}">
+        {% else %}
+                        <h2>Seller Name: {{ user.username }}</h2>    <img style="border-radius: 50% ; width: 100px;height: 100px" alt="User image" src="../../../static/images/img.png">
+        {% endif %}
+        <h3>Created products:</h3>
+        {% for product in products %}
+            <img src="{{ product.image.url }}" alt="produt image" >
+            <h1>{{ product.name }} - {{ product.price }} {{ product.currency  }}</h1>
+        {% endfor %}
+{% endblock %}

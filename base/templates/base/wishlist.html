@@ -1,0 +1,30 @@
+{% extends 'main.html' %}
+
+{% block content %}
+    {% include 'navbar.html' %}
+        {% if wished_products %}
+    {% for listed in wished_products %}
+
+        <div style="display: flex;flex-direction: column;height: 260px" class="product-item">
+            <a href="{% url 'product' listed.product.id %}">
+                {% if listed.product.image %}
+                    <img style="position:relative;z-index: 10;width: 200px; height: 151px" class="product_img" src="{{ listed.product.image.url }}">
+                    <img  style="z-index: 1;position: relative;top: -155px;;width: 200px; height: 151px" class="product_img" src="/images/images/img.png">
+                {% else %}
+                    <img style="width: 200px; height: 151px" class="product_img" alt="Product" src="static/media/images/img_1.png">
+                {% endif %}
+            </a>
+            <p style="height: 40px;">{{ listed.product.name }}</p>
+            <p style="height: 40px">{{ listed.product.description }}</p>
+            <div style="height: 80px">
+                <a  href="{% url 'product' listed.product.id %}"><button>Buy now</button></a>
+            </div>
+            {% if product.host == request.user %}
+            <button>Delete</button>
+            {% endif %}
+        </div>
+        {% endfor %}
+            {% else %}
+            You do not have a wished product
+        {% endif %}
+{% endblock %}

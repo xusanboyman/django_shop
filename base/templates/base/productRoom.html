@@ -1,0 +1,440 @@
+{% extends 'main.html' %}
+{% block content %}
+    {% include 'navbar.html' %}
+
+    <style>
+        .image {
+            width: 800px;
+            height: 500px;
+            padding: 0 20px 0 0;
+            position: relative;
+            z-index: 21;
+        }
+        #image2 {
+            width: 800px;
+            height: 500px;
+            padding: 0 20px 0 0;
+            position: absolute;
+            left: 20px;
+            z-index: 1;
+        }
+
+        #all {
+            display: flex;
+        }
+
+        .datails {
+            display: flex;
+            align-items: center;
+
+            p {
+                font-size: 20px;
+                margin-left: 20px;
+            }
+
+        }
+
+        .comment {
+            overflow: scroll;
+            border: 1px solid black;
+            width: 520px;
+            height: 300px;
+        }
+
+        .input {
+            display: flex;
+            align-items: center;
+            width: 500px;
+            padding: 10px;
+            border: 1px solid black;
+            height: 45px;
+        }
+
+        .comment_input {
+            display: flex;
+            border: 1px solid black;
+            width: 580px;
+            border-radius: 40px;
+            padding: 5px;
+        }
+    </style>
+    <div style="display:flex;height: 780px;padding: 20px" id="all">
+            <div style="width: 950px">
+                <img class="image" alt="{{ product.name }}" src="{{ product.image.url }}">
+                <img id="image2" alt="{{ product.name }}" src="/images/images/img.png">
+            </div>
+        <div>
+
+            <div class="datails">
+                <h2>Product name:</h2>
+                <p>{{ product.name }}</p>
+            </div>
+            <div class="datails">
+                <h2>Description:</h2>
+                <p>{{ product.description }}</p>
+            </div>
+            <div class="datails">
+                <h2>For:</h2>
+                <p>{{ product.price }} {{ product.currency }}</p>
+            </div>
+            <div style="margin-top: 50px">
+                <h2 style="display: flex;align-items: center">
+                    Comments:
+                </h2>
+                <div class="comment">
+                    <div class="input">
+                        <div class="comment_input">
+                            <img style="height: 40px;width: 40px;border-radius: 50%"
+                                 src=" {{ request.user.avatar.url }}" alt="user">
+                            <form method="POST" action="{% url 'product' product.id %}">
+                                {% csrf_token %}
+                                <input style="width: 400px;height:1px;padding: 20px; border: 1px solid rgba(0,0,0,0.27);border-radius: 20px"
+                                       type="text" name="comment" placeholder="Add your comment" required>
+                                <button style="display:none;" type="submit">Submit</button>
+                            </form>
+
+                        </div>
+                    </div>
+                    <div class="comments-container">
+                        {% for comments in comment %}
+                            <div style="display: flex; justify-content: {% if comments.user.id == request.user.id %}flex-end{% else %}flex-start{% endif %};">
+                                {% if comments.user.id == request.user.id %}
+                                    <div>
+                                        <p style="background-color: #006b1b; color: white; padding: 10px; border-radius: 8px; max-width: 70%;right: 0;">{{ comments.body }}</p>
+                                    </div>
+                                {% else %}
+                                    <div>
+                                        <div style="display: flex;align-items: center;gap: 10px">
+                                            <img style="width: 40px;height: 40px;border-radius: 50%" src="{{ comments.user.avatar.url }}">
+                                            <div style="display:flex;flex-direction: column">
+                                                <span id="user_name">{{ comments.user.name }}</span>
+                                                <span>{{ comments.created }}</span>
+                                            </div>
+                                        </div>
+                                    <div style="padding-left: 10px">
+                                        <p style="padding-left:10px;border-left:1px solid rgba(159,159,159,0.94)">{{ comments.body }}</p>
+                                    </div>
+                                    </div>
+                                {% endif %}
+                            </div>
+                        {% endfor %}
+                    </div>
+
+                </div>
+            </div>
+            <div id="myDiv2">
+                <div id="myDIV" style="z-index: 10;position:relative;" onclick="openNavB()">Buy</div>
+            </div>
+        </div>
+    </div>
+    <script>
+let token = document.getElementById('user_name');
+for(user in token){
+let user = token.innerText;  // Get the text inside the element
+
+    let first = user[0];
+    let last = user[user.length - 1];
+
+    // Replace all characters between the first and last with '*'
+    let middle = '*'.repeat(user.length - 2);
+
+    let changed_user = first + middle + last;
+
+    token.innerHTML = changed_user;
+    console.log(changed_user);}
+
+
+
+
+    </script>
+
+
+    <style>
+        body {
+            font-family: "Lato", sans-serif;
+            background: white;
+        }
+
+        ::-webkit-scrollbar {
+            display: none;
+        }
+
+        /* For other browsers */
+        {#overflow: hidden;#}
+        .sidenav {
+            height: 100%;
+            width: 0;
+            position: fixed;
+            z-index: 1;
+            top: 0;
+            right: 0;
+            background-color: white;
+            overflow-x: hidden;
+            transition: 0.5s;
+            padding-top: 60px;
+        }
+
+        .sidenav p {
+            top: 0;
+            padding: 8px 8px 8px 32px;
+            text-decoration: none;
+            font-size: 25px;
+            color: #818181;
+            display: block;
+            transition: 0.3s;
+        }
+
+        .sidenav a:hover {
+            color: #f1f1f1;
+        }
+
+        .sidenav span {
+            display: block;
+
+        }
+
+        .sidenav .closebtn {
+            position: absolute;
+            top: 0;
+            right: 25px;
+            font-size: 36px;
+            margin-left: 50px;
+        }
+
+        h3 {
+            color: #81d4fa;
+        }
+
+        #mySidenav {
+            border-radius: 10px;
+        }
+
+        #mySidenav span {
+            
+            rotate: 45deg;
+            scale: 2;
+            position: absolute;
+            color: red;
+            z-index: 2;
+            top: 10px;
+            right: 10px;
+        }
+
+        .inside {
+            padding-left: 30px;
+        }
+
+        @media screen and (max-height: 450px) {
+            .sidenav {
+                padding-top: 15px;
+            }
+
+            .sidenav p {
+                font-size: 18px;
+            }
+        }
+
+        .counter-container {
+            display: flex;
+            align-items: center;
+            border: 1px solid #ddd;
+            border-radius: 25px;
+            overflow: hidden;
+            width: 120px;
+        }
+
+        .counter-btn {
+            width: 40px;
+            height: 40px;
+            background-color: #f0f0f0;
+            border: none;
+            border-radius: 50%;
+            font-size: 18px;
+            color: #555;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            outline: none;
+        }
+
+        .counter-btn:active {
+            background-color: #e0e0e0;
+        }
+
+        * {
+            user-select: none; /* Prevents text selection */
+            -webkit-user-select: none; /* For Safari */
+            -moz-user-select: none; /* For Firefox */
+            -ms-user-select: none; /* For Internet Explorer/Edge */
+        }
+
+
+        #counter-value {
+            width: 40px;
+            text-align: center;
+            border: none;
+            font-size: 18px;
+            outline: none;
+            background-color: transparent;
+        }
+
+        #myDIV {
+            font-size: large;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 120px;
+            height: 50px;
+            background-color: coral;
+            color: white;
+            animation: mymove 1s infinite;
+        }
+
+        @keyframes mymove {
+            0% {
+                box-shadow: 5px 10px 10px blue;
+            }
+            50% {
+                box-shadow: 5px 10px 10px #08a194;
+            }
+            100% {
+                box-shadow: 5px 10px 10px #7c0649;
+            }
+            50% {
+                box-shadow: 5px 10px 10px #af7323;
+            }
+            0% {
+                box-shadow: 5px 10px 10px #4c0993;
+            }
+        }
+    </style>
+
+    {#<-- menu -->#}
+    <div id="mySidenav" class="sidenav" style="height: 100%;z-index: 100">
+        <div class="inside">
+            <h5 style="display:flex;justify-content:space-between;position: absolute;top: 0;margin-bottom:50px;z-index: 2;background: white;color: black;width: 490px">
+                Select variations and quantity</h5>
+            <span style="font-size:30px;cursor:pointer" onclick="closeNavB()">+</span>
+            <div style="display: flex;justify-content: space-between;border: 1px solid rgb(83,82,82); border-radius: 10px">
+                <div style="margin-left: 10px;display: flex;align-items: center;">
+                    <img style="width: 50px;height: 50px" alt="p" src="{{ product.image.url }} ">
+                    <h3 style="margin-left: 30px">{{ product.name }}</h3>
+                </div>
+                <div style="display:flex;align-items: center">
+                    {{ product.price }}{{ product.currency }}
+                </div>
+                <div style="display:flex;align-items: center">
+                    <div class="counter-container">
+                        <button class="counter-btn" onclick="decrement()">-</button>
+                        <label for="counter-value"></label><input type="text" id="counter-value" value="0" readonly>
+                        <button class="counter-btn" onclick="increment()">+</button>
+                    </div>
+
+                </div>
+            </div>
+
+            <div style="margin: 0;padding: 0">
+                <div style="padding-bottom: 10px;display: flex"><h3>Shipping</h3></div>
+                <div style="display: flex;flex-direction: row;align-items: center">
+                    <h4 style="padding: 0;margin: 0;">shipping fee: $<h4 id="fee2">6.99 </h4><h4
+                            style="margin-left: 10px"> for</h4></h4>
+                    <h4 style="margin-left: 10px" id="input_valu2"></h4>
+                </div>
+                <h4 style="color:#22891F;padding: 0;margin: 0">Guaranteed delivery in 15 days</h4>
+            </div>
+        </div>
+
+        <footer style="display: flex;position: fixed;bottom: 0;width:100%;height: 200px;border: 1px solid red">
+            <div style="padding-left:20px ">
+                <div>
+                    <h3>Item subtotal</h3>
+                    <div style="display: flex;flex-direction: row;justify-content:space-between;align-items: center">
+                        <div>
+                            <h4 style="padding: 0;margin: 0;">shipping Total: $</h4>
+                            <h4 id="fee">$</h4>
+                            <h4 style="margin-left: 10px" id="input_valu"></h4>
+                            <h4 style="margin-left: 10px" id="input_valu"></h4>
+                        </div>
+                    </div>
+
+                </div>
+                <form method="POST" action="{% url 'add_to_wishlist' product.id %}">
+                    {% csrf_token %}
+                    <button type="submit">Add to Wishlist</button>
+{#                    <form method="POST" action="{% url 'de' %}"#}
+                </form>
+            </div>
+
+        </footer>
+    </div>
+    <script>
+        function openNavB() {
+            document.getElementById("mySidenav").style.width = "40%";
+            document.getElementById("all").style.opacity = '0.5';
+            document.getElementById("myDiv2").style.opacity = '0.5';
+            document.getElementById("all").style.background = 'black';
+            document.getElementById("image2").style.opacity = '0.5';
+            document.getElementById("image2").style.background = 'black';
+            document.getElementById("myDiv2").style.background = 'black';
+
+            // If you need a delay before setting the onclick handler
+            setTimeout(() => {
+                document.getElementById("all").onclick = closeNavB;
+            }, 2);
+        }
+
+
+        function closeNavB() {
+            document.getElementById("mySidenav").style.width = "0";
+            document.getElementById("all").style.opacity = '1';
+            document.getElementById("myDiv2").style.opacity = '1';
+            document.getElementById("all").style.background = 'White';
+            document.getElementById("myDiv2").style.background = 'White';
+            location.reload();
+        }
+
+        let initialBaseFee = 6.99; // Initial base fee
+        let baseFee = initialBaseFee; // Variable to store the dynamically adjusted base fee
+
+        function increment() {
+            let value = parseInt(document.getElementById('counter-value').value);
+            let result = value + 1;
+            document.getElementById('counter-value').value = result;
+
+
+            // Decrease the base fee by 0.1% for each item ordered
+            if (result > 1) {
+                baseFee = initialBaseFee * Math.pow(0.999, result - 1); // Decrease base fee progressively
+            }
+
+            let multiplier = Math.floor(result / 4); // Number of times to apply the multiplier
+            let finalFee = baseFee * Math.pow(1.5, multiplier); // Apply the multiplier based on the number of items
+            let word = '';
+            if (value === 1) {
+                word = 'pieces';
+            } else {
+                word = 'piece'; // Set word to 'piece' when value is 1
+            }
+            document.getElementById("fee").innerHTML = finalFee.toFixed(2); // Format fee to two decimal places
+            document.getElementById("fee2").innerHTML = finalFee.toFixed(2); // Format fee to two decimal places
+            document.getElementById("input_valu").innerHTML = result + " " + word;
+            document.getElementById("input_valu2").innerHTML = result + " " + word;
+        }
+
+            document.getElementById("fee").innerHTML = finalFee.toFixed(2); // Format fee to two decimal places
+            document.getElementById("fee2").innerHTML = finalFee.toFixed(2); // Format fee to two decimal places
+            document.getElementById("input_valu").innerHTML = result + " " + word;
+            document.getElementById("input_valu2").innerHTML = result + " " + word;
+            function decrement() {
+                let value = parseInt(document.getElementById('counter-value').value);
+                if (value > 0) {
+                    document.getElementById('counter-value').value = value - 1;
+                }
+            }
+
+
+
+    </script>
+
+{% endblock %}

@@ -1,0 +1,105 @@
+{% extends 'main.html' %}
+{% block content %}
+    <style>
+        /* Chrome, Safari, Edge, Opera */
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        /* Firefox */
+        input[type=number] {
+            -moz-appearance: textfield;
+        }
+        label{
+
+            padding-right: 100px;
+        }
+        input{
+            margin-bottom: 20px;
+            width: 200px;
+        }
+        .div{
+            background: rgba(255, 255, 255, 0.43);
+            border: 1px solid ;
+            padding-left: 100px;
+            padding-top: 50px;
+            padding-bottom: 50px;
+        }
+
+        #description{
+            height: 70px;
+            width: 220px;
+            margin-bottom: 20px;
+        }
+    </style>
+    <form method="POST" action="" enctype="multipart/form-data">
+        {% csrf_token %}
+    <div  style="background: rgba(255,255,55,0.5);width: 100%;height: 100vh;display: flex;align-items: center;justify-content: center">
+        <div class="div" style="display: flex;width: 300px;flex-direction: column;font-size: 20px;align-items: center;justify-content: center;border-radius: 40px">
+                              <div style="width: 100%;background: rgba(255,255,255,0.07)" class="layout__boxHeader">
+        <div style="position: absolute;left: 600px;top: 80px" class="layout__boxTitle">
+          <a href="{% url 'home' %}">
+            <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="22" viewBox="0 0 32 32">
+              <title>arrow-left</title>
+              <path
+                d="M13.723 2.286l-13.723 13.714 13.719 13.714 1.616-1.611-10.96-10.96h27.625v-2.286h-27.625l10.965-10.965-1.616-1.607z">
+              </path>
+            </svg>
+          </a>
+        </div>
+      </div>
+            <div style="display: inline-block">
+                <div>
+            <label for="name">Product Name:</label>
+            <input type="text" id="name" name="name" required>
+        </div>
+        <div>
+
+            <label for="topic">Category:</label>
+            <input list="category-list" id="topic" name="topic" required>
+        </div>
+        <div>
+
+            <datalist id="category-list">
+                {% for category in categories %}
+                    <option value="{{ category.name }}">{{ category.name }}</option>
+                {% endfor %}
+            </datalist>
+        </div>
+        <div>
+
+            <label for="currency">Currency:</label>
+            <input list="currency-list" id="currency" name="currency" required>
+        </div>
+        <div>
+
+            <datalist id="currency-list">
+                {% for money in currencies %}
+                    <option value="{{ money.name }}">{{ money.name }}</option>
+                {% endfor %}
+            </datalist>
+        </div>
+        <div>
+
+            <label for="price">Price:</label>
+            <input type="number" id="price" name="price" step="0.01" required>
+
+        </div>
+        <div>
+            <label for="description">Description:</label>
+            <textarea id="description" name="description"></textarea>
+
+        </div>
+        <div>
+            <label for="image">Product Image:</label>
+            <input type="file" id="image" name="image">
+        </div>
+        <button style="margin-top: 20px;width: 200px;height: 50px;font-size: 20px;background: #4da84d;border-radius: 20px" type="submit">Create Product</button>
+            </div>
+        </div>
+    </div>
+    </form>
+
+{% endblock %}

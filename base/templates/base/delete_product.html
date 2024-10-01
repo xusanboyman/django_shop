@@ -1,0 +1,9 @@
+{% extends 'main.html' %}
+{% block content %}
+    <form method="post" action="{% url 'delete_product' obj.id %}">
+        {% csrf_token %}
+        <p>Are you sure to delelete "{{obj.name}}"?</p>
+        <a href="{% url 'home' %}">Go Back</a>
+        <input type="submit" value="Confirm" />
+    </form>
+{% endblock %}

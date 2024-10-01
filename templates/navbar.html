@@ -1,0 +1,81 @@
+{% load static %}
+        <nav style="height: 45px;" onclick="closeNav()" class="navbar">
+            <a href="{% url 'home' %}">
+            <div class="logo">
+                <img src="{% static 'media/static/images/img.png'%}"  alt="Shop"/>
+            </div>
+                </a>
+        <div>
+                <form class="header__search" method="GET" action="{% url 'home' %}">
+            <label>
+                <input name="q" placeholder="Search for posts" />
+            </label>
+        </form>
+        </div>
+            <ul class="nav-links" style="display: flex; align-items: center">
+            {% if user.role.name == "Admin" %}
+                <li><a href="{% url 'all_users' %}">All users</a></li>
+            {% endif %}
+                <li><a href="{% url 'sellers' %}">Our sellers</a></li>
+                <li><a href="{% url 'wishlist' %}">Wishlist</a></li>
+                {% if  request.user.is_authenticated %}
+                {% if request.user.role.name == 'Admin'  or request.user.role.name == "User" %}
+                    <li style="margin-right: 20px"><a href='{% url 'create_product' %}'>create room</a></li>
+                    {% endif %}
+                {% endif %}
+                    {% if not request.user.is_authenticated %}
+                        <li><a href='{% url 'create_product' %}'>create room</a></li>
+                        <li><a href="{% url 'login' %}">Login</a></li>
+                    {% endif %}
+                <li></li>
+                <li></li>
+            </ul>
+        </nav>
+    <div style="top: 9px;right: 5px;position: absolute;">
+        {% if request.user.is_authenticated %}
+            <div id="close" onclick="openNav()"><img style="height: 50px;width: 50px;border-radius: 50%" src="{{ user.avatar.url }}" alt="User image"></div>
+        {% endif %}
+    </div>
+<style>
+    .nav:hover{
+        background: white;
+        box-shadow: 10px 10px black;
+        transition-duration: 2s;
+        opacity: 0.8;
+    }
+    .nav{
+        border: 1px solid black;border-radius: 30px;display: flex;align-items: center;gap: 10px;justify-content: center;width: 100%;
+        margin-bottom: 15px;
+    }
+</style>
+<div id="sidenav" style="z-index: 200;;overflow: hidden;background: #a5a4a4;height: 400px;width: 0;top: 0;right: 0;position: absolute;border-radius: 20px 0 20px 20px">
+    <div>
+        <div style="display: flex;align-items: center;width: 100%;height: 100px;border-bottom:1px solid black;margin-bottom: 30px">
+            <div style="display:flex;gap: 10px;left: 0;margin-left: 20px;cursor: pointer;width: 100%">
+                <a href="{% url 'sellerPage' request.user.id %}"><img  style="height: 50px;width: 50px;border-radius: 50%" src="{{ user.avatar.url }}" alt="User image"></a>
+                <div style="display: flex;flex-direction: column;margin-top: 7px">
+                    <a href="{% url 'sellerPage' request.user.id %}"><p style="margin: 0;height: 20px">{{ user.name }}</p><p style="margin: 0;height: 20px">{{ user.email }}</p></a>
+                </div>
+            </div>
+
+        </div>
+        <a href="{% url 'edit_user' request.user.id %}"><div class="nav" id=""><p style="font-size: 20px;">Edit user</p><img style="height: 25px;width: 25px;" src="{% static '/media/icons/user.png' %}" alt="Log out"></div></a>
+        <div class="nav" id=""><p style="font-size: 20px;">Log out</p><img style="height: 25px;width: 25px;" src="{% static '/media/icons/img.png' %}" alt="Log out"></div>
+        <a href="{% url 'logout' %}"><div class="nav" id=""><p style="font-size: 20px;">Log out</p><img style="height: 25px;width: 25px;" src="{% static '/media/icons/img.png'%}" alt="Log out"></div></a>
+    </div>
+</div>
+<script>
+    function openNav(){
+        document.getElementById('sidenav').style.width = '250px'
+       setTimeout(() => {
+        document.getElementById("close").onclick = closeNav;
+    }, 1);
+    }
+    function closeNav(){
+                document.getElementById('sidenav').style.width = '0px'
+
+       setTimeout(() => {
+        document.getElementById("close").onclick = openNav;
+    }, 1);
+    }
+</script>
